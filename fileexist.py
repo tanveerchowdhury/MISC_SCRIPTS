@@ -30,7 +30,8 @@ def getDateTime():
 def checkFile():
 
     fileList = os.listdir('/home/tanveer/Scripts/') # Grab the directory List
-    
+
+    # Iterate through all the files and directories and search for spefied file 
     for filename in fileList:
         fsearch = re.search( r'_a_test', filename,re.M|re.I)   
      
