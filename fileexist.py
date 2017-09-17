@@ -29,8 +29,6 @@ def getDateTime():
 
 def checkFile():
 
-#    findFiles = [r'_a_test',r'_b_test']
-
     fileList = os.listdir('/home/tanveer/Scripts/') # Grab the directory List
     
     for filename in fileList:
