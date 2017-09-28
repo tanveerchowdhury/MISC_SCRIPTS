@@ -20,12 +20,12 @@
 # =====================================================
 
 # NAS Shared Drive Location
-PARENT_DIR="/files/infosec"
+NAS_DIR="/files/infosec"
 # App Sec File Location
-DEST_DIR="/files/infosec/ASA"
+APPSEC_DIR="/files/infosec/ASA"
 
 # Change directory to parent folder
-cd $PARENT_DIR 
+cd $NAS_DIR 
 
 # Loop through the files in NAS folder and search for iAppli files
 for file in `ls -1`;
@@ -33,6 +33,6 @@ for file in `ls -1`;
 	if [[ "$file" == *"iAppli"* ]] || [[ "$file" == *"IAPPLI"* ]]; then 
 
 		NewFile=`echo $file | cut -d _ -f2-5` # Create new filename by removing the timestamp part
-	 	/bin/mv -v $file $DEST_DIR/$NewFile   # Use new filename for move to ASA subfolder	
+	 	/bin/mv -v $file $APPSEC_DIR/$NewFile   # Use new filename for move to ASA subfolder	
 	fi 
    done
