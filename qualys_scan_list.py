@@ -17,7 +17,7 @@ def login(s):
     #
     payload = {
                'action':'login',
-               'username':'username',
+               'username':'user',
                'password':'password'
                }
     r = s.post('https://qualysapi.qg2.apps.qualys.com/api/2.0/fo/session/', data=payload)
@@ -26,7 +26,7 @@ def login(s):
     xmlreturn = ET.fromstring(r.text)
     print (xmlreturn)
     for elem in xmlreturn.findall('.//TEXT'):
-        print (elem.text) #Prints the "Logged in" message. Not really needed, but reassuring.
+        print (elem.text) #Prints the "Logged in" message.
  
 #def checkScan(s, scanRef):
 
@@ -42,8 +42,7 @@ def checkScan(s):
                }
     r = s.post('https://qualysapi.qg2.apps.qualys.com/api/2.0/fo/scan/', data=payload)
  
-    # Now that all the hard work was done, lets parse the response.
-    #print r.text   #prints the full xml response from Qualys just for fun.
+    # parse the response.
     print (r.text + " =========================\n")
     xmlreturn = ET.fromstring(r.text)
 
@@ -51,10 +50,32 @@ def checkScan(s):
     for elem in xmlreturn.findall('.//SCAN'):
         scanID     = elem[0].text 
         scanName   = elem[1].text
-        scanStatus = elem[2].text
-        print ("Scan ID: "+scanID + " | Scan Name:" + scanName +" | Status:"+ scanStatus)   #Prints the status message. Not really needed, but reassuring.
+        scanStatus = elem[7].text
+        print ("Scan ID: "+scanID + " | Scan Name:" + scanName +" | Status:"+ scanStatus) 
     #return status
   
+def checkUnixAuthRecord(s):
+    #
+    # --- Download details on Unix Authentication Records ---
+    #
+
+    payload = {
+               'action':'list',
+               'details':'All'
+              }
+
+    r = s.post('https://qualysapi.qg2.apps.qualys.com/api/2.0/fo/auth/unix/', data=payload)
+    
+#    print (r.text)
+    xmlreturn = ET.fromstring(r.text)
+
+    for elem in xmlreturn.findall('.//AUTH_UNIX'):
+        scanID     = elem[0].text 
+        scanName   = elem[1].text
+        print ("Scan ID: "+scanID + " | Scan Name:" + scanName)
+        for elem2 in xmlreturn.findall('.//IP_SET'):
+            print (elem2[0].text + " | " + elem2[1].text)
+
 def downloadReport(s, reportID):
     #
     #---Download Report---
@@ -99,8 +120,10 @@ def main():
     #while checkScan(s) != "Finished":
     #    time.sleep(600)
 
-    checkScan(s)
-#    downloadReport(s,2945097) 
+#    checkUnixAuthRecord(s)
+
+#    checkScan(s)
+    downloadReport(s,2968571) 
     logout(s)
     s.close()
 
